@@ -39,15 +39,22 @@ QuizManagementSystem/
 │
 ├── Main.java
 ├── LoginFrame.java
+├── AdminLogin.java
 ├── AdminDashboard.java
 ├── StudentDashboard.java
+│
 ├── AddQuestionFrame.java
 ├── ViewQuestionFrame.java
 ├── QuizFrame.java
 ├── ResultFrame.java
+├── ViewResultFrame.java
+│
 ├── Question.java
-└── QuestionStore.java
-```
+├── QuestionStore.java
+├── Result.java
+├── ResultStore.java
+│
+└── README.md
 
 ---
 

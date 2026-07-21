@@ -72,7 +72,7 @@ public class LoginFrame extends JFrame implements ActionListener {
         exitButton.addActionListener(this);
         add(exitButton);
 
-        JLabel footer = new JLabel("Developed in Java Swing", SwingConstants.CENTER);
+        JLabel footer = new JLabel("Developed by Abhinav & Anshu", SwingConstants.CENTER);
         footer.setBounds(0, 370, 600, 30);
         footer.setForeground(Color.GRAY);
         add(footer);

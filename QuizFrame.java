@@ -4,13 +4,13 @@ import java.awt.event.*;
 
 public class QuizFrame extends JFrame implements ActionListener {
 
-    JLabel lblQuestion, lblProgress;
+    JLabel lblQuestion, lblNumber;
 
     JRadioButton rb1, rb2, rb3, rb4;
 
     ButtonGroup group;
 
-    JButton btnNext;
+    JButton nextBtn;
 
     int current = 0;
     int score = 0;
@@ -18,22 +18,21 @@ public class QuizFrame extends JFrame implements ActionListener {
     public QuizFrame() {
 
         setTitle("Quiz");
-        setSize(750,500);
+        setSize(700, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setResizable(false);
         setLayout(null);
 
-        getContentPane().setBackground(new Color(245,248,250));
+        getContentPane().setBackground(Color.WHITE);
 
-        lblProgress = new JLabel();
-        lblProgress.setBounds(30,20,200,25);
-        lblProgress.setFont(new Font("Segoe UI",Font.BOLD,16));
-        add(lblProgress);
+        lblNumber = new JLabel();
+        lblNumber.setBounds(30, 20, 100, 30);
+        lblNumber.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        add(lblNumber);
 
         lblQuestion = new JLabel();
-        lblQuestion.setBounds(30,60,680,40);
-        lblQuestion.setFont(new Font("Segoe UI",Font.BOLD,18));
+        lblQuestion.setBounds(30, 60, 620, 40);
+        lblQuestion.setFont(new Font("Segoe UI", Font.BOLD, 18));
         add(lblQuestion);
 
         rb1 = new JRadioButton();
@@ -41,22 +40,15 @@ public class QuizFrame extends JFrame implements ActionListener {
         rb3 = new JRadioButton();
         rb4 = new JRadioButton();
 
-        rb1.setBounds(60,130,600,30);
-        rb2.setBounds(60,180,600,30);
-        rb3.setBounds(60,230,600,30);
-        rb4.setBounds(60,280,600,30);
+        rb1.setBounds(50,130,500,30);
+        rb2.setBounds(50,180,500,30);
+        rb3.setBounds(50,230,500,30);
+        rb4.setBounds(50,280,500,30);
 
-        Font optionFont = new Font("Segoe UI",Font.PLAIN,16);
-
-        rb1.setFont(optionFont);
-        rb2.setFont(optionFont);
-        rb3.setFont(optionFont);
-        rb4.setFont(optionFont);
-
-        rb1.setBackground(getContentPane().getBackground());
-        rb2.setBackground(getContentPane().getBackground());
-        rb3.setBackground(getContentPane().getBackground());
-        rb4.setBackground(getContentPane().getBackground());
+        rb1.setBackground(Color.WHITE);
+        rb2.setBackground(Color.WHITE);
+        rb3.setBackground(Color.WHITE);
+        rb4.setBackground(Color.WHITE);
 
         group = new ButtonGroup();
 
@@ -70,25 +62,31 @@ public class QuizFrame extends JFrame implements ActionListener {
         add(rb3);
         add(rb4);
 
-        btnNext = new JButton("Next ➜");
-        btnNext.setBounds(280,370,150,45);
-        btnNext.setBackground(new Color(52,152,219));
-        btnNext.setForeground(Color.WHITE);
-        btnNext.setFont(new Font("Segoe UI",Font.BOLD,16));
-        btnNext.setFocusPainted(false);
-        btnNext.addActionListener(this);
-        add(btnNext);
+        nextBtn = new JButton("Next");
+        nextBtn.setBounds(270,360,120,40);
+        nextBtn.addActionListener(this);
+        add(nextBtn);
+
+        if (QuestionStore.getQuestionCount() == 0) {
+
+            JOptionPane.showMessageDialog(this,
+                    "No Questions Available");
+
+            dispose();
+            new StudentDashboard();
+            return;
+        }
 
         loadQuestion();
 
         setVisible(true);
     }
 
-    private void loadQuestion(){
+    private void loadQuestion() {
 
-        Question q = QuestionStore.questions.get(current);
+        Question q = QuestionStore.getQuestion(current);
 
-        lblProgress.setText("Question " + (current+1) + " / " + QuestionStore.questions.size());
+        lblNumber.setText("Q." + (current + 1));
 
         lblQuestion.setText(q.getQuestion());
 
@@ -99,45 +97,72 @@ public class QuizFrame extends JFrame implements ActionListener {
 
         group.clearSelection();
 
-        if(current == QuestionStore.questions.size()-1)
-            btnNext.setText("Finish");
-        else
-            btnNext.setText("Next ➜");
-
+        if (current == QuestionStore.getQuestionCount() - 1) {
+            nextBtn.setText("Finish");
+        } else {
+            nextBtn.setText("Next");
+        }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        String selected = "";
+        String answer = "";
 
-        if(rb1.isSelected())
-            selected = rb1.getText();
+        if (rb1.isSelected())
+            answer = rb1.getText();
 
-        if(rb2.isSelected())
-            selected = rb2.getText();
+        else if (rb2.isSelected())
+            answer = rb2.getText();
 
-        if(rb3.isSelected())
-            selected = rb3.getText();
+        else if (rb3.isSelected())
+            answer = rb3.getText();
 
-        if(rb4.isSelected())
-            selected = rb4.getText();
+        else if (rb4.isSelected())
+            answer = rb4.getText();
 
-        if(selected.equals(
-                QuestionStore.questions.get(current).getAnswer()))
+        if (answer.equalsIgnoreCase(
+                QuestionStore.getQuestion(current).getAnswer())) {
+
             score++;
+
+        }
 
         current++;
 
-        if(current<QuestionStore.questions.size()){
+        if (current < QuestionStore.getQuestionCount()) {
 
             loadQuestion();
 
-        }else{
+        } else {
+
+            String studentName = JOptionPane.showInputDialog(
+                    this,
+                    "Enter Student Name");
+
+            if (studentName == null ||
+                    studentName.trim().isEmpty()) {
+
+                studentName = "Unknown";
+
+            }
+
+            ResultStore.addResult(
+
+                    new Result(
+                            studentName,
+                            QuestionStore.getQuestionCount(),
+                            score
+                    )
+
+            );
 
             dispose();
 
-            new ResultFrame(score,QuestionStore.questions.size());
+            new ResultFrame(
+                    score,
+                    QuestionStore.getQuestionCount()
+            );
 
         }
 

@@ -7,8 +7,12 @@ public class Question {
     private String option4;
     private String answer;
 
-    public Question(String question, String option1, String option2,
-                    String option3, String option4, String answer) {
+    public Question(String question,
+                    String option1,
+                    String option2,
+                    String option3,
+                    String option4,
+                    String answer) {
 
         this.question = question;
         this.option1 = option1;
@@ -16,7 +20,10 @@ public class Question {
         this.option3 = option3;
         this.option4 = option4;
         this.answer = answer;
+
     }
+
+    // Getters
 
     public String getQuestion() {
         return question;
@@ -41,6 +48,8 @@ public class Question {
     public String getAnswer() {
         return answer;
     }
+
+    // Setters
 
     public void setQuestion(String question) {
         this.question = question;
@@ -68,6 +77,12 @@ public class Question {
 
     @Override
     public String toString() {
-        return question;
+
+        return "Question : " + question +
+               "\nA. " + option1 +
+               "\nB. " + option2 +
+               "\nC. " + option3 +
+               "\nD. " + option4 +
+               "\nAnswer : " + answer;
     }
 }
