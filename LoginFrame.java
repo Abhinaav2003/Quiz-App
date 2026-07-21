@@ -43,12 +43,12 @@ public class LoginFrame extends JFrame implements ActionListener {
 
         if (e.getSource() == adminButton) {
             dispose();
-            new AdminDashboard();
+            new AdminLogin();
         }
 
         else if (e.getSource() == studentButton) {
             dispose();
-            new StudentDashboard();
+            new AdminLogin();
         }
 
         else if (e.getSource() == exitButton) {
