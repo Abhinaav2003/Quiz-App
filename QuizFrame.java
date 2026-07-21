@@ -4,78 +4,106 @@ import java.awt.event.*;
 
 public class QuizFrame extends JFrame implements ActionListener {
 
-    private JLabel questionLabel;
-    private JRadioButton option1, option2, option3, option4;
-    private ButtonGroup group;
-    private JButton nextButton;
+    JLabel lblQuestion, lblProgress;
 
-    private int currentQuestion = 0;
-    private int score = 0;
+    JRadioButton rb1, rb2, rb3, rb4;
+
+    ButtonGroup group;
+
+    JButton btnNext;
+
+    int current = 0;
+    int score = 0;
 
     public QuizFrame() {
 
         setTitle("Quiz");
-        setSize(700, 400);
+        setSize(750,500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
         setLayout(null);
 
-        questionLabel = new JLabel();
-        questionLabel.setBounds(30, 20, 620, 40);
-        questionLabel.setFont(new Font("Arial", Font.BOLD, 16));
-        add(questionLabel);
+        getContentPane().setBackground(new Color(245,248,250));
 
-        option1 = new JRadioButton();
-        option1.setBounds(50, 80, 500, 30);
+        lblProgress = new JLabel();
+        lblProgress.setBounds(30,20,200,25);
+        lblProgress.setFont(new Font("Segoe UI",Font.BOLD,16));
+        add(lblProgress);
 
-        option2 = new JRadioButton();
-        option2.setBounds(50, 120, 500, 30);
+        lblQuestion = new JLabel();
+        lblQuestion.setBounds(30,60,680,40);
+        lblQuestion.setFont(new Font("Segoe UI",Font.BOLD,18));
+        add(lblQuestion);
 
-        option3 = new JRadioButton();
-        option3.setBounds(50, 160, 500, 30);
+        rb1 = new JRadioButton();
+        rb2 = new JRadioButton();
+        rb3 = new JRadioButton();
+        rb4 = new JRadioButton();
 
-        option4 = new JRadioButton();
-        option4.setBounds(50, 200, 500, 30);
+        rb1.setBounds(60,130,600,30);
+        rb2.setBounds(60,180,600,30);
+        rb3.setBounds(60,230,600,30);
+        rb4.setBounds(60,280,600,30);
+
+        Font optionFont = new Font("Segoe UI",Font.PLAIN,16);
+
+        rb1.setFont(optionFont);
+        rb2.setFont(optionFont);
+        rb3.setFont(optionFont);
+        rb4.setFont(optionFont);
+
+        rb1.setBackground(getContentPane().getBackground());
+        rb2.setBackground(getContentPane().getBackground());
+        rb3.setBackground(getContentPane().getBackground());
+        rb4.setBackground(getContentPane().getBackground());
 
         group = new ButtonGroup();
-        group.add(option1);
-        group.add(option2);
-        group.add(option3);
-        group.add(option4);
 
-        add(option1);
-        add(option2);
-        add(option3);
-        add(option4);
+        group.add(rb1);
+        group.add(rb2);
+        group.add(rb3);
+        group.add(rb4);
 
-        nextButton = new JButton("Next");
-        nextButton.setBounds(270, 280, 120, 40);
-        nextButton.addActionListener(this);
-        add(nextButton);
+        add(rb1);
+        add(rb2);
+        add(rb3);
+        add(rb4);
+
+        btnNext = new JButton("Next ➜");
+        btnNext.setBounds(280,370,150,45);
+        btnNext.setBackground(new Color(52,152,219));
+        btnNext.setForeground(Color.WHITE);
+        btnNext.setFont(new Font("Segoe UI",Font.BOLD,16));
+        btnNext.setFocusPainted(false);
+        btnNext.addActionListener(this);
+        add(btnNext);
 
         loadQuestion();
 
         setVisible(true);
     }
 
-    private void loadQuestion() {
+    private void loadQuestion(){
 
-        Question q = QuestionStore.questions.get(currentQuestion);
+        Question q = QuestionStore.questions.get(current);
 
-        questionLabel.setText("Q" + (currentQuestion + 1) + ". " + q.getQuestion());
+        lblProgress.setText("Question " + (current+1) + " / " + QuestionStore.questions.size());
 
-        option1.setText(q.getOption1());
-        option2.setText(q.getOption2());
-        option3.setText(q.getOption3());
-        option4.setText(q.getOption4());
+        lblQuestion.setText(q.getQuestion());
+
+        rb1.setText(q.getOption1());
+        rb2.setText(q.getOption2());
+        rb3.setText(q.getOption3());
+        rb4.setText(q.getOption4());
 
         group.clearSelection();
 
-        if (currentQuestion == QuestionStore.questions.size() - 1) {
-            nextButton.setText("Finish");
-        } else {
-            nextButton.setText("Next");
-        }
+        if(current == QuestionStore.questions.size()-1)
+            btnNext.setText("Finish");
+        else
+            btnNext.setText("Next ➜");
+
     }
 
     @Override
@@ -83,38 +111,36 @@ public class QuizFrame extends JFrame implements ActionListener {
 
         String selected = "";
 
-        if (option1.isSelected())
-            selected = option1.getText();
+        if(rb1.isSelected())
+            selected = rb1.getText();
 
-        else if (option2.isSelected())
-            selected = option2.getText();
+        if(rb2.isSelected())
+            selected = rb2.getText();
 
-        else if (option3.isSelected())
-            selected = option3.getText();
+        if(rb3.isSelected())
+            selected = rb3.getText();
 
-        else if (option4.isSelected())
-            selected = option4.getText();
+        if(rb4.isSelected())
+            selected = rb4.getText();
 
-        if (selected.equals(
-                QuestionStore.questions.get(currentQuestion).getAnswer())) {
-
+        if(selected.equals(
+                QuestionStore.questions.get(current).getAnswer()))
             score++;
 
-        }
+        current++;
 
-        currentQuestion++;
-
-        if (currentQuestion < QuestionStore.questions.size()) {
+        if(current<QuestionStore.questions.size()){
 
             loadQuestion();
 
-        } else {
+        }else{
 
             dispose();
 
-            new ResultFrame(score, QuestionStore.questions.size());
+            new ResultFrame(score,QuestionStore.questions.size());
 
         }
 
     }
+
 }

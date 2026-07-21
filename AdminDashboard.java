@@ -6,88 +6,135 @@ public class AdminDashboard extends JFrame implements ActionListener {
 
     JButton addBtn, viewBtn, deleteBtn, logoutBtn;
 
+    Color bg = new Color(245,248,250);
+    Color blue = new Color(52,152,219);
+    Color green = new Color(46,204,113);
+    Color red = new Color(231,76,60);
+    Color orange = new Color(243,156,18);
+
+    Font titleFont = new Font("Segoe UI", Font.BOLD, 26);
+    Font btnFont = new Font("Segoe UI", Font.BOLD, 16);
+
     public AdminDashboard() {
 
         setTitle("Admin Dashboard");
-        setSize(450, 400);
+        setSize(650,500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
+        setResizable(false);
 
-        JLabel heading = new JLabel("ADMIN DASHBOARD");
-        heading.setFont(new Font("Arial", Font.BOLD, 22));
-        heading.setBounds(90, 20, 300, 30);
-        add(heading);
+        getContentPane().setBackground(bg);
 
-        addBtn = new JButton("Add Question");
-        addBtn.setBounds(120, 80, 180, 40);
+        JLabel title = new JLabel("ADMIN DASHBOARD");
+        title.setFont(titleFont);
+        title.setForeground(blue);
+        title.setBounds(170,20,350,40);
+        add(title);
+
+        addBtn = new JButton("➕ Add Question");
+        addBtn.setBounds(180,90,250,45);
+        styleButton(addBtn,green);
+
+        viewBtn = new JButton("📄 View Questions");
+        viewBtn.setBounds(180,155,250,45);
+        styleButton(viewBtn,blue);
+
+        deleteBtn = new JButton("❌ Delete Question");
+        deleteBtn.setBounds(180,220,250,45);
+        styleButton(deleteBtn,orange);
+
+        logoutBtn = new JButton("🚪 Logout");
+        logoutBtn.setBounds(180,285,250,45);
+        styleButton(logoutBtn,red);
+
         add(addBtn);
-
-        viewBtn = new JButton("View Questions");
-        viewBtn.setBounds(120, 140, 180, 40);
         add(viewBtn);
-
-        deleteBtn = new JButton("Delete Question");
-        deleteBtn.setBounds(120, 200, 180, 40);
         add(deleteBtn);
-
-        logoutBtn = new JButton("Logout");
-        logoutBtn.setBounds(120, 260, 180, 40);
         add(logoutBtn);
 
-        addBtn.addActionListener(this);
-        viewBtn.addActionListener(this);
-        deleteBtn.addActionListener(this);
-        logoutBtn.addActionListener(this);
+        JLabel footer = new JLabel("Quiz Management System");
+        footer.setBounds(230,400,250,25);
+        footer.setForeground(Color.GRAY);
+        add(footer);
 
         setVisible(true);
+    }
+
+    private void styleButton(JButton button, Color color){
+
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setFont(btnFont);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        button.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == addBtn) {
+        if(e.getSource()==addBtn){
+
             new AddQuestionFrame();
+
         }
 
-        else if (e.getSource() == viewBtn) {
+        else if(e.getSource()==viewBtn){
+
             new ViewQuestionFrame();
+
         }
 
-        else if (e.getSource() == deleteBtn) {
+        else if(e.getSource()==deleteBtn){
 
-            String input = JOptionPane.showInputDialog(this, "Enter Question Number (starting from 1):");
+            String input = JOptionPane.showInputDialog(
+                    this,
+                    "Enter Question Number");
 
-            try {
+            try{
 
-                int index = Integer.parseInt(input) - 1;
+                int index = Integer.parseInt(input)-1;
 
-                if (index >= 0 && index < QuestionStore.questions.size()) {
+                if(index>=0 && index<QuestionStore.questions.size()){
 
                     QuestionStore.questions.remove(index);
 
-                    JOptionPane.showMessageDialog(this, "Question Deleted Successfully");
-
-                } else {
-
-                    JOptionPane.showMessageDialog(this, "Invalid Question Number");
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Question Deleted Successfully");
 
                 }
 
-            } catch (Exception ex) {
+                else{
 
-                JOptionPane.showMessageDialog(this, "Invalid Input");
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Invalid Question Number");
+
+                }
+
+            }
+
+            catch(Exception ex){
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Invalid Input");
 
             }
 
         }
 
-        else if (e.getSource() == logoutBtn) {
+        else if(e.getSource()==logoutBtn){
 
             dispose();
+
             new LoginFrame();
 
         }
 
     }
+
 }

@@ -4,56 +4,84 @@ import java.awt.event.*;
 
 public class AdminLogin extends JFrame implements ActionListener {
 
-    JLabel titleLabel;
-    JLabel userLabel;
-    JLabel passLabel;
+    JLabel lblTitle, lblUser, lblPass;
 
-    JTextField txtUsername;
-    JPasswordField txtPassword;
+    JTextField txtUser;
+    JPasswordField txtPass;
 
-    JButton btnLogin;
-    JButton btnBack;
+    JButton btnLogin, btnBack;
 
     int attempts = 3;
+
+    Color bg = new Color(245,248,250);
+    Color blue = new Color(52,152,219);
+    Color red = new Color(231,76,60);
+
+    Font titleFont = new Font("Segoe UI", Font.BOLD, 28);
+    Font normalFont = new Font("Segoe UI", Font.PLAIN, 16);
+    Font btnFont = new Font("Segoe UI", Font.BOLD, 16);
 
     public AdminLogin() {
 
         setTitle("Admin Login");
-        setSize(400, 300);
+        setSize(500,400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
         setLayout(null);
 
-        titleLabel = new JLabel("ADMIN LOGIN");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 22));
-        titleLabel.setBounds(120, 20, 200, 30);
-        add(titleLabel);
+        getContentPane().setBackground(bg);
 
-        userLabel = new JLabel("Username");
-        userLabel.setBounds(40, 80, 100, 25);
-        add(userLabel);
+        lblTitle = new JLabel("🔒 ADMIN LOGIN");
+        lblTitle.setFont(titleFont);
+        lblTitle.setForeground(blue);
+        lblTitle.setBounds(120,30,300,40);
+        add(lblTitle);
 
-        txtUsername = new JTextField();
-        txtUsername.setBounds(150, 80, 180, 25);
-        add(txtUsername);
+        lblUser = new JLabel("Username");
+        lblUser.setFont(normalFont);
+        lblUser.setBounds(70,110,100,25);
+        add(lblUser);
 
-        passLabel = new JLabel("Password");
-        passLabel.setBounds(40, 120, 100, 25);
-        add(passLabel);
+        txtUser = new JTextField();
+        txtUser.setBounds(180,110,220,35);
+        txtUser.setFont(normalFont);
+        add(txtUser);
 
-        txtPassword = new JPasswordField();
-        txtPassword.setBounds(150, 120, 180, 25);
-        add(txtPassword);
+        lblPass = new JLabel("Password");
+        lblPass.setFont(normalFont);
+        lblPass.setBounds(70,170,100,25);
+        add(lblPass);
+
+        txtPass = new JPasswordField();
+        txtPass.setBounds(180,170,220,35);
+        txtPass.setFont(normalFont);
+        add(txtPass);
 
         btnLogin = new JButton("Login");
-        btnLogin.setBounds(70, 190, 100, 35);
+        btnLogin.setBounds(90,260,130,45);
+        btnLogin.setBackground(blue);
+        btnLogin.setForeground(Color.WHITE);
+        btnLogin.setFont(btnFont);
+        btnLogin.setFocusPainted(false);
+        btnLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnLogin.addActionListener(this);
         add(btnLogin);
 
         btnBack = new JButton("Back");
-        btnBack.setBounds(210, 190, 100, 35);
+        btnBack.setBounds(260,260,130,45);
+        btnBack.setBackground(red);
+        btnBack.setForeground(Color.WHITE);
+        btnBack.setFont(btnFont);
+        btnBack.setFocusPainted(false);
+        btnBack.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnBack.addActionListener(this);
         add(btnBack);
+
+        JLabel info = new JLabel("Default Username : admin   Password : admin123");
+        info.setBounds(60,330,380,20);
+        info.setForeground(Color.GRAY);
+        add(info);
 
         setVisible(true);
     }
@@ -61,49 +89,56 @@ public class AdminLogin extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == btnLogin) {
+        if(e.getSource()==btnLogin){
 
-            String username = txtUsername.getText();
-            String password = String.valueOf(txtPassword.getPassword());
+            String username = txtUser.getText().trim();
+            String password = String.valueOf(txtPass.getPassword());
 
-            // Default Admin Username and Password
-            if (username.equals("admin") && password.equals("admin123")) {
+            if(username.equals("admin") && password.equals("admin123")){
 
-                JOptionPane.showMessageDialog(this,
-                        "Login Successful");
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Login Successful!");
 
                 dispose();
+
                 new AdminDashboard();
 
-            } else {
+            }else{
 
                 attempts--;
 
-                if (attempts > 0) {
+                if(attempts>0){
 
-                    JOptionPane.showMessageDialog(this,
-                            "Invalid Username or Password\nAttempts Left : "
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Invalid Username or Password\n\nAttempts Left : "
                                     + attempts);
 
-                } else {
+                }else{
 
-                    JOptionPane.showMessageDialog(this,
-                            "Admin Account Locked!");
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Admin Login Locked!");
 
                     btnLogin.setEnabled(false);
 
                 }
 
+                txtPass.setText("");
+
             }
 
         }
 
-        if (e.getSource() == btnBack) {
+        if(e.getSource()==btnBack){
 
             dispose();
+
             new LoginFrame();
 
         }
 
     }
+
 }

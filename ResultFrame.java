@@ -4,55 +4,82 @@ import java.awt.event.*;
 
 public class ResultFrame extends JFrame implements ActionListener {
 
-    JButton homeButton;
+    JButton btnHome, btnExit;
 
     public ResultFrame(int score, int total) {
 
         setTitle("Quiz Result");
-        setSize(450, 350);
+        setSize(550, 450);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
         setLayout(null);
 
+        getContentPane().setBackground(new Color(245, 248, 250));
+
+        Font titleFont = new Font("Segoe UI", Font.BOLD, 28);
+        Font textFont = new Font("Segoe UI", Font.PLAIN, 18);
+
+        int wrong = total - score;
         int percentage = (score * 100) / total;
 
-        JLabel title = new JLabel("QUIZ RESULT");
-        title.setFont(new Font("Arial", Font.BOLD, 22));
-        title.setBounds(130, 20, 200, 30);
+        JLabel title = new JLabel("🎉 QUIZ RESULT");
+        title.setFont(titleFont);
+        title.setForeground(new Color(41, 128, 185));
+        title.setBounds(140, 20, 300, 40);
         add(title);
 
         JLabel totalLabel = new JLabel("Total Questions : " + total);
-        totalLabel.setBounds(80, 80, 250, 25);
+        totalLabel.setFont(textFont);
+        totalLabel.setBounds(120, 90, 300, 30);
         add(totalLabel);
 
         JLabel correctLabel = new JLabel("Correct Answers : " + score);
-        correctLabel.setBounds(80, 120, 250, 25);
+        correctLabel.setFont(textFont);
+        correctLabel.setBounds(120, 130, 300, 30);
         add(correctLabel);
 
-        JLabel wrongLabel = new JLabel("Wrong Answers : " + (total - score));
-        wrongLabel.setBounds(80, 160, 250, 25);
+        JLabel wrongLabel = new JLabel("Wrong Answers : " + wrong);
+        wrongLabel.setFont(textFont);
+        wrongLabel.setBounds(120, 170, 300, 30);
         add(wrongLabel);
 
         JLabel percentLabel = new JLabel("Percentage : " + percentage + "%");
-        percentLabel.setBounds(80, 200, 250, 25);
+        percentLabel.setFont(textFont);
+        percentLabel.setBounds(120, 210, 300, 30);
         add(percentLabel);
 
-        JLabel resultLabel;
+        JLabel resultLabel = new JLabel();
+        resultLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        resultLabel.setBounds(120, 260, 300, 35);
 
         if (percentage >= 40) {
-            resultLabel = new JLabel("Result : PASS");
+            resultLabel.setText("✅ RESULT : PASS");
+            resultLabel.setForeground(new Color(39, 174, 96));
         } else {
-            resultLabel = new JLabel("Result : FAIL");
+            resultLabel.setText("❌ RESULT : FAIL");
+            resultLabel.setForeground(Color.RED);
         }
 
-        resultLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        resultLabel.setBounds(80, 230, 200, 30);
         add(resultLabel);
 
-        homeButton = new JButton("Back to Home");
-        homeButton.setBounds(130, 270, 170, 35);
-        homeButton.addActionListener(this);
-        add(homeButton);
+        btnHome = new JButton("🏠 Home");
+        btnHome.setBounds(100, 330, 140, 45);
+        btnHome.setBackground(new Color(52, 152, 219));
+        btnHome.setForeground(Color.WHITE);
+        btnHome.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        btnHome.setFocusPainted(false);
+        btnHome.addActionListener(this);
+        add(btnHome);
+
+        btnExit = new JButton("🚪 Exit");
+        btnExit.setBounds(290, 330, 140, 45);
+        btnExit.setBackground(new Color(231, 76, 60));
+        btnExit.setForeground(Color.WHITE);
+        btnExit.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        btnExit.setFocusPainted(false);
+        btnExit.addActionListener(this);
+        add(btnExit);
 
         setVisible(true);
     }
@@ -60,9 +87,17 @@ public class ResultFrame extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        dispose();
+        if (e.getSource() == btnHome) {
 
-        new LoginFrame();
+            dispose();
+            new LoginFrame();
 
+        }
+
+        if (e.getSource() == btnExit) {
+
+            System.exit(0);
+
+        }
     }
 }
