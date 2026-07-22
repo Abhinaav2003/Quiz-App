@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Program Files (x86)\\MySQL\\jfreechart-1.0.19\\jfreechart-1.0.19-demo.jar"
+    ]
+}
