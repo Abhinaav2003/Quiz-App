@@ -174,9 +174,12 @@ View Questions  Result
 
 ## 👨‍💻 Author
 
+**Anshu Rajput**
+<br/>
 **Abhinav Tiwari**
 
 GitHub: https://github.com/Abhinaav2003
+GitHub: https://github.com/anshurajput312
 
 ---
 
